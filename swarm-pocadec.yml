@@ -3,6 +3,7 @@ version: "3.8"
 services:
   caddy:
     image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    # image: cdp-custom:2.6.4-alpine
     ports:
       - target: 80
         published: 80
@@ -33,6 +34,9 @@ services:
           memory: 200M
       labels: # Global options
         caddy.email: ${ACME_USER_EMAIL}
+        # While using the custom image with cache plugin, we need to uncomment the following labels
+        # caddy.order: cache before rewrite
+        # caddy.cache:
 
 
   agent:

@@ -10,6 +10,21 @@ Start the stack via `docker stack deploy -c pocadec.yml pocadec`
 This is going to be a nice readme and basic doco for the deployment of this stack on a docker swarm, with FAQ regarding some workaround and caveats.
 
 
+## Create required networks
+
+```bash
+docker network create -d overlay agent_network
+docker network create -d overlay --attachable caddy-public
+```
+
+## http cache
+Firstly build the custom image using `caddy.dockerfile`, then set it in the main `swarm-pocadec.yml` and uncomment the last two caddy labels.
+
+```bash
+docker build -t cdp-custom:2.6.4-alpine . -f caddy.dockerfile
+```
+
+
 ## ENV List
 ACME_USER_EMAIL  
 DNS_PROVIDER
