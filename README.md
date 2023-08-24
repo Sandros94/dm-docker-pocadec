@@ -24,6 +24,10 @@ Firstly build the custom image using `caddy.dockerfile`, then set it in the main
 docker build -t cdp-custom:2.6.4-alpine . -f caddy.dockerfile
 ```
 
+## check current caddyfile.autosave
+```bash
+docker exec $(docker ps -qf "name=^pocadec_caddy") sh -c "cat /config/caddy/Caddyfile.autosave"
+```
 
 ## ENV List
 ACME_USER_EMAIL  
