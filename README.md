@@ -21,7 +21,7 @@ docker network create -d overlay --attachable caddy-public
 Firstly build the custom image using `caddy.dockerfile`, then set it in the main `swarm-pocadec.yml` and uncomment the last two caddy labels.
 
 ```bash
-docker build -t cdp-custom:2.6.4-alpine . -f caddy.dockerfile
+docker build -t cdp-custom:2.7.4-alpine . -f caddy.dockerfile --build-arg="CADDY_VERSION=2.7.4"
 ```
 
 ## check current caddyfile.autosave

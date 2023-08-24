@@ -3,7 +3,7 @@ version: "3.8"
 services:
   caddy:
     image: lucaslorentz/caddy-docker-proxy:ci-alpine
-    # image: cdp-custom:2.6.4-alpine
+    # image: cdp-custom:2.7.4-alpine
     ports:
       - target: 80
         published: 80
