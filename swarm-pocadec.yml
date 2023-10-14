@@ -87,7 +87,7 @@ services:
         caddy_01.reverse_proxy.transport: "http"
         caddy_01.reverse_proxy.transport.tls_insecure_skip_verify:
         # Edge
-        caddy_02: ${EDGE_DOMAIN}
+        caddy_02: http://${EDGE_DOMAIN}
         caddy_02.reverse_proxy: "{{upstreams 8000}}"
 
 
