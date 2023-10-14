@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    # image: cdp-custom:2.7.4-alpine
+    ports:
+      - target: 80
+        published: 80
+        mode: host
+      - target: 443
+        published: 443
+        mode: host
+    networks:
+      - caddy-public
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # this volume is needed to keep the certificates
+      # otherwise, new ones will be re-issued upon restart
+      - caddy_data:/data
+    environment:
+      CADDY_INGRESS_NETWORKS: caddy-public
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+      resources:
+        reservations:
+          cpus: "0.1"
+          memory: 200M
+      labels: # Global options
+        caddy.email: ${ACME_USER_EMAIL}
+        # While using the custom image with cache plugin, we need to uncomment the following labels
+        # caddy.order: cache before rewrite
+        # caddy.cache:
+
+
+  agent:
+    image: portainer/agent:latest
+    environment:
+      EDGE: 1
+      EDGE_ID:
+      EDGE_KEY: 
+      # Per Doco:"Should be equal to the service name prefixed by "tasks." when deployed inside an overlay network"
+      AGENT_CLUSTER_ADDR: tasks.agent
+      # AGENT_SECRET: ${PORTAINER_SECRET}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /:/host
+      - portainer_agent_data:/data
+    networks:
+      - agent_network
+    deploy:
+      mode: global
+      placement:
+        constraints: 
+          - node.platform.os == linux
+
+
+volumes:
+  caddy_data:
+
+
+networks:
+  caddy-public:
+    #driver: overlay
+    external: true
+  agent_network:
+    #driver: overlay
+    external: true
