@@ -24,6 +24,12 @@ Firstly build the custom image using `caddy.dockerfile`, then set it in the main
 docker build -t cdp-custom:2.7.4-alpine . -f caddy.dockerfile --build-arg="CADDY_VERSION=2.7.4"
 ```
 
+## caddy-dns
+In the event of requiring a [dns resolver](https://github.com/caddy-dns) for using wildcards, a custom Caddy image build is required with the following structure added.
+```dockerfile
+build  --with github.com/caddy-dns/REPOSITORY_NAME
+```
+
 ## check current caddyfile.autosave
 ```bash
 docker exec $(docker ps -qf "name=^pocadec_caddy") sh -c "cat /config/caddy/Caddyfile.autosave"
